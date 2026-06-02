@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Central API service for SpeedWay backend (Spring Boot on port 8080).
 class ApiService {
-  static const String baseUrl = 'http://10.0.2.2:8080/api';
+  static const String baseUrl = 'https://evacuee-trapping-ablaze.ngrok-free.dev';
 
   static const _keyToken = 'auth_token';
   static const _keyEmail = 'auth_email';
