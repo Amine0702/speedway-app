@@ -71,7 +71,7 @@ class ApiService {
     required String fullName,
   }) async {
     final res = await http.post(
-      Uri.parse('$baseUrl/auth/register'),
+      Uri.parse('$baseUrl/api/auth/register'),        // ✅ /api/
       headers: _publicHeaders,
       body: jsonEncode({
         'email': email,
@@ -91,7 +91,7 @@ class ApiService {
     required String password,
   }) async {
     final res = await http.post(
-      Uri.parse('$baseUrl/auth/login'),
+      Uri.parse('$baseUrl/api/auth/login'),           // ✅ /api/
       headers: _publicHeaders,
       body: jsonEncode({'email': email, 'password': password}),
     );
@@ -110,7 +110,10 @@ class ApiService {
   // ── Cars ───────────────────────────────────────────────────────────────────
 
   static Future<List<Map<String, dynamic>>> getCars() async {
-    final res = await http.get(Uri.parse('$baseUrl/cars'), headers: _headers);
+    final res = await http.get(
+      Uri.parse('$baseUrl/api/cars'),                 // ✅ /api/
+      headers: _headers,
+    );
     _handleErrors(res);
     final body = jsonDecode(res.body) as Map<String, dynamic>;
     final list = body['content'] as List<dynamic>;
@@ -119,7 +122,7 @@ class ApiService {
 
   static Future<Map<String, dynamic>> getCar(String id) async {
     final res = await http.get(
-      Uri.parse('$baseUrl/cars/$id'),
+      Uri.parse('$baseUrl/api/cars/$id'),             // ✅ /api/
       headers: _headers,
     );
     _handleErrors(res);
@@ -130,7 +133,7 @@ class ApiService {
     String carId,
   ) async {
     final res = await http.get(
-      Uri.parse('$baseUrl/cars/$carId/unavailable-dates'),
+      Uri.parse('$baseUrl/api/cars/$carId/unavailable-dates'), // ✅ /api/
       headers: _headers,
     );
     _handleErrors(res);
@@ -163,7 +166,7 @@ class ApiService {
     File? documentImageFile,
   }) async {
     final res = await http.post(
-      Uri.parse('$baseUrl/reservations'),
+      Uri.parse('$baseUrl/api/reservations'),         // ✅ /api/
       headers: _headers,
       body: jsonEncode({
         'carId': carId,
@@ -185,7 +188,7 @@ class ApiService {
 
   static Future<List<Map<String, dynamic>>> getMyReservations() async {
     final res = await http.get(
-      Uri.parse('$baseUrl/reservations/my'),
+      Uri.parse('$baseUrl/api/reservations/my'),      // ✅ /api/
       headers: _headers,
     );
     _handleErrors(res);
