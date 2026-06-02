@@ -1,4 +1,7 @@
-name: Build APK
+- name: Build APK
+  run: |
+    flutter pub upgrade fluttertoast
+    flutter build apk --release
 
 on:
   workflow_dispatch:
