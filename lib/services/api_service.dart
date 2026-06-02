@@ -17,7 +17,13 @@ class ApiService {
 
   static Map<String, String> get _headers => {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
     if (_token != null) 'Authorization': 'Bearer $_token',
+  };
+
+  static Map<String, String> get _publicHeaders => {
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
   };
 
   // ── Session state ──────────────────────────────────────────────────────────
@@ -26,7 +32,6 @@ class ApiService {
   static String? get currentUserEmail => _userEmail;
   static String? get currentUserName => _userName;
 
-  /// Call once at app start (before runApp or in main()) to restore session.
   static Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
     _token = prefs.getString(_keyToken);
@@ -67,7 +72,7 @@ class ApiService {
   }) async {
     final res = await http.post(
       Uri.parse('$baseUrl/auth/register'),
-      headers: {'Content-Type': 'application/json'},
+      headers: _publicHeaders,
       body: jsonEncode({
         'email': email,
         'password': password,
@@ -87,7 +92,7 @@ class ApiService {
   }) async {
     final res = await http.post(
       Uri.parse('$baseUrl/auth/login'),
-      headers: {'Content-Type': 'application/json'},
+      headers: _publicHeaders,
       body: jsonEncode({'email': email, 'password': password}),
     );
     _handleErrors(res);
@@ -121,7 +126,6 @@ class ApiService {
     return jsonDecode(res.body) as Map<String, dynamic>;
   }
 
-  /// Returns a list of {startDate, endDate} strings for already-booked periods.
   static Future<List<Map<String, dynamic>>> getCarUnavailableDates(
     String carId,
   ) async {
@@ -134,7 +138,6 @@ class ApiService {
     return list.cast<Map<String, dynamic>>();
   }
 
-  // ✅ FIX: Handles both "isAvailable" and "available" JSON keys.
   static bool parseIsAvailable(Map<String, dynamic> car) {
     final v = car['isAvailable'] ?? car['available'];
     if (v == null) return true;
